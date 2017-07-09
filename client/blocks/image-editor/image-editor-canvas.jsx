@@ -4,7 +4,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDom from 'react-dom';
 import { connect } from 'react-redux';
-import { noop, throttle, startsWith } from 'lodash';
+import { noop, startsWith } from 'lodash';
 import classNames from 'classnames';
 
 /**
@@ -62,14 +62,16 @@ class ImageEditorCanvas extends Component {
 		isImageLoaded: false
 	};
 
+	onWindowResize = () => {
+		this.requestAnimationFrameId = window.requestAnimationFrame( this.updateCanvasPosition );
+	};
+
 	constructor( props ) {
 		super( props );
 
-		this.onWindowResize = null;
-
 		this.onLoadComplete = this.onLoadComplete.bind( this );
 		this.updateCanvasPosition = this.updateCanvasPosition.bind( this );
-
+		this.requestAnimationFrameId = null;
 		this.isVisible = false;
 	}
 
@@ -126,7 +128,7 @@ class ImageEditorCanvas extends Component {
 
 		this.drawImage();
 		this.updateCanvasPosition();
-		this.onWindowResize = throttle( this.updateCanvasPosition, 200 );
+
 		if ( typeof window !== 'undefined' ) {
 			window.addEventListener( 'resize', this.onWindowResize );
 		}
@@ -137,7 +139,7 @@ class ImageEditorCanvas extends Component {
 	componentWillUnmount() {
 		if ( typeof window !== 'undefined' && this.onWindowResize ) {
 			window.removeEventListener( 'resize', this.onWindowResize );
-			this.onWindowResize = null;
+			window.cancelAnimationFrame( this.requestAnimationFrameId );
 		}
 
 		this.isVisible = false;
@@ -233,11 +235,16 @@ class ImageEditorCanvas extends Component {
 			canvasX = -50 * widthRatio - 100 * leftRatio,
 			canvasY = -50 * heightRatio - 100 * topRatio;
 
+		const canvasOffsetTop = canvas.offsetTop;
+		const canvasOffsetLeft = canvas.offsetLeft;
+		const canvasOffsetWidth = canvas.offsetWidth;
+		const canvasOffsetHeight = canvas.offsetHeight;
+
 		this.props.setImageEditorCropBounds(
-			canvas.offsetTop - canvas.offsetHeight * -canvasY / 100,
-			canvas.offsetLeft - canvas.offsetWidth * -canvasX / 100,
-			canvas.offsetTop + canvas.offsetHeight * ( 1 + canvasY / 100 ),
-			canvas.offsetLeft + canvas.offsetWidth * ( 1 + canvasX / 100 )
+			canvasOffsetTop - canvasOffsetHeight * -canvasY / 100,
+			canvasOffsetLeft - canvasOffsetWidth * -canvasX / 100,
+			canvasOffsetTop + canvasOffsetHeight * ( 1 + canvasY / 100 ),
+			canvasOffsetLeft + canvasOffsetWidth * ( 1 + canvasX / 100 )
 		);
 	}
 
