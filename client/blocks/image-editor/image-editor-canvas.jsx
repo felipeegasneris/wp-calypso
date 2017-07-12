@@ -250,16 +250,13 @@ class ImageEditorCanvas extends Component {
 			canvasX = -50 * widthRatio - 100 * leftRatio,
 			canvasY = -50 * heightRatio - 100 * topRatio;
 
-		const canvasOffsetTop = canvas.offsetTop,
-			canvasOffsetLeft = canvas.offsetLeft,
-			canvasOffsetWidth = canvas.offsetWidth,
-			canvasOffsetHeight = canvas.offsetHeight;
+		const { offsetTop, offsetLeft, offsetWidth, offsetHeight } = canvas;
 
 		this.props.setImageEditorCropBounds(
-			canvasOffsetTop - canvasOffsetHeight * -canvasY / 100,
-			canvasOffsetLeft - canvasOffsetWidth * -canvasX / 100,
-			canvasOffsetTop + canvasOffsetHeight * ( 1 + canvasY / 100 ),
-			canvasOffsetLeft + canvasOffsetWidth * ( 1 + canvasX / 100 )
+			offsetTop - offsetHeight * -canvasY / 100,
+			offsetLeft - offsetWidth * -canvasX / 100,
+			offsetTop + offsetHeight * ( 1 + canvasY / 100 ),
+			offsetLeft + offsetWidth * ( 1 + canvasX / 100 )
 		);
 	}
 
