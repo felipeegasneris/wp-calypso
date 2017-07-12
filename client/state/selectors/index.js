@@ -92,6 +92,8 @@ export getSelectedOrAllSitesJetpackCanManage from './get-selected-or-all-sites-j
 export getSelectedOrAllSitesWithPlugins from './get-selected-or-all-sites-with-plugins';
 export getSelectedOrPrimarySiteId from './get-selected-or-primary-site-id';
 export getScheduledPublicizeShareActionTime from './get-scheduled-publicize-share-action-time';
+export getSiteComputedAttributes from './get-site-computed-attributes';
+export getSiteOptions from './get-site-options';
 export hasUserAskedADirectlyQuestion from './has-user-asked-a-directly-question';
 export isSchedulingPublicizeShareActionError from './is-scheduling-publicize-share-action-error';
 export getSharingButtons from './get-sharing-buttons';
