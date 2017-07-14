@@ -6,9 +6,20 @@ import classnames from 'classnames';
 import page from 'page';
 
 /**
- * Internal dependencies
+ * Helper function which triggers a callback on a keydown event, only
+ * if the key pressed is space or enter - to mirror button functionality.
+ *
+ * @param {Function} callback A callback function
+ * @return {Function} the callback to fire on a keydown event
  */
-import onKeyDownCallback from 'woocommerce/lib/keydown-callback';
+const getKeyboardClickHandler = ( callback ) => {
+	return ( event ) => {
+		if ( event.key === 'Enter' || event.key === ' ' ) {
+			event.preventDefault();
+			callback( event );
+		}
+	};
+};
 
 const TableRow = ( { className, isHeader, href, children, ...props } ) => {
 	const rowClasses = classnames( 'table-row', className, {
@@ -33,7 +44,7 @@ const TableRow = ( { className, isHeader, href, children, ...props } ) => {
 			role="button"
 			tabIndex="0"
 			onClick={ goToHref }
-			onKeyDown={ onKeyDownCallback( goToHref ) }
+			onKeyDown={ getKeyboardClickHandler( goToHref ) }
 			{ ...props }>
 			{ children }
 		</tr>
