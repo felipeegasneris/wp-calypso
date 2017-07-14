@@ -44,7 +44,7 @@ const reducer = ( state = IDLE, { message } ) => {
 		return MESSAGE_STATUS_MAP[ message ]( state );
 	} else if ( isDoneBuilding( message ) ) {
 		return doneBuilding( state );
-	} else if ( needsReload ) {
+	} else if ( needsReload( state ) ) {
 		return NEEDS_RELOAD;
 	}
 
